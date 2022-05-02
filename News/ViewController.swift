@@ -6,15 +6,29 @@
 //
 
 import UIKit
-
+/*struct Test {
+    let name: String
+}*/
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        print("Hello word !!!")
+        view.backgroundColor = .systemBackground
+       
+        /*NetworkManager.shared.getNews { (news) in
+            guard let news = news else {
+                return
+            }
+            let test = Test(name: news[0].title!)
+            print(test.name)
+            if (test.name != nil) {
+                print("we have it")
+            } else {
+                print("Something went wrong")
+            }
+            
+        }*/
     }
-
-
 }
 
