@@ -6,10 +6,25 @@
 //
 
 import UIKit
+class NewsTableViewCellModel {
+    let title: String
+    let subTitle: String
+    let imageURL: URL?
+    var imageData: Data?
+    
+    init(
+        title: String,
+        subTitle: String,
+        imageURL: URL?
+    ) {
+        self.title = title
+        self.subTitle = subTitle
+        self.imageURL = imageURL
+    }
+}
 
-class NewTableViewCell: UITableViewCell {
-
-    @IBOutlet weak var newsCategory: UILabel!
+class NewsTableViewCell: UITableViewCell {
+    static let identifier = "NewsTableViewCell"
     @IBOutlet weak var newsContent: UITextField!
     @IBOutlet weak var newsTitle: UILabel!
     @IBOutlet weak var newsImage: UIImageView!

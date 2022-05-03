@@ -5,52 +5,35 @@
 //  Created by Nguyen Phuong on 09/02/1401 AP.
 //
 
-import Foundation
+import UIKit
 
-
-/*class NetworkManager {
-    let imageCache = NSCache<NSString, NSData>()
-    
-    static let shared = NetworkManager()
+class NetworkService {
+    static let shared = NetworkService()
     private init() {}
     
-    private let baseUrlString = "https://newsapi.org/v2/"
-    private let USTopHeadline = "top-headlines?country=us"
-    
-    func getNews(completion: @escaping ([News]?) -> Void) {
-        let urlString = "\(baseUrlString)\(USTopHeadline)&apiKey=05e37a7f003b4e80bbbd3af9ae86eaf8"
-        guard let url = URL(string: urlString) else {
-            return
-        }
-        URLSession.shared.dataTask(with: url) {
-            (data, reponsen, error) in guard error == nil, let data = data else {
-                completion(nil)
-                return
-            }
-            
-            let newsEvelope = try? JSONDecoder().decode(NewsEvelope.self, from: data)
-            newsEvelope == nil ? completion(nil) : completion(newsEvelope!.articles)
-        }.resume()
+    struct Constants {
+        static let baseUrl = URL(string: "https://newsapi.org/v2/top-headlines?category=technology&country=us&apiKey=05e37a7f003b4e80bbbd3af9ae86eaf8")
     }
     
-    /*func getImage(urlString: String, completion: @escaping (Data?) -> Void) {
-        guard let url = URL(string: urlString) else {
-            completion(nil)
+    func downloadNews(completion: @escaping (Result<[Article], Error>) -> Void) {
+        guard let url = Constants.baseUrl else {
             return
         }
-        
-        if let cachedImage = imageCache.object(forKey: NSString(string: urlString)) {
-            completion(cachedImage as Data)
-        } else {
-            URLSession.shared.dataTask(with: url) {
-                (data, reponsen, error) in guard error == nil, let data = data else {
-                    completion(nil)
-                    return
+        let task = URLSession.shared.dataTask(with: url) { data, _, error in
+            if let error = error {
+                completion(.failure(error))
+            }
+            else if let data = data {
+                do {
+                    let result = try JSONDecoder().decode(APIResponse.self, from: data)
+                    print("Articles: \(result.articles.count)")
+                    completion(.success(result.articles))
                 }
-                
-                self.imageCache.setObject(data as NSData, forKey: NSString(string: urlString))
-                completion(nil)
-            }.resume()
+                catch {
+                    completion(.failure(error))
+                }
+            }
         }
-    }*/
-}*/
+        task.resume()
+    }
+}

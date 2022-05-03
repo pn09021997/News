@@ -8,15 +8,28 @@
 import UIKit
 
 class NewTableViewController: UITableViewController {
-    var newsList = [News]()
+    private var viewModels = [NewsTableViewCellModel]()
     override func viewDidLoad() {
         super.viewDidLoad()
-        let image = UIImage(named: "default")
-        if let new = News(title: "ABC", description: "desc", urlToImage: image, publishedAt: "09/02/1997", category: "business") {
-            newsList.append(new)
-        }
-        if let new = News(title: "ABC", description: "desc", urlToImage: image, publishedAt: "09/02/1997", category: "business") {
-            newsList.append(new)
+        NetworkService.shared.downloadNews { result in
+            switch result {
+            case .success(let articles):
+                self.viewModels = articles.compactMap({
+                    NewsTableViewCellModel(
+                        title: $0.title,
+                        subTitle: $0.description ?? "No description",
+                        imageURL: URL(string: $0.urlToImage ?? "")
+                    )
+                })
+                
+                print(articles[0].urlToImage)
+                
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            case .failure(let error):
+                print(error)
+            }
         }
         
         // Uncomment the following line to preserve selection between presentations
@@ -35,23 +48,35 @@ class NewTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return newsList.count
+        return viewModels.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellIdentifier = "NewTableViewCell"
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? NewTableViewCell else {
-            fatalError("Can not create a cell")
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsTableViewCell.identifier, for: indexPath) as? NewsTableViewCell else {
+            fatalError()
         }
-        let new = newsList[indexPath.row]
-        cell.newsImage.image = new.getUrlToImage()
-        cell.newsTitle.text = new.getTitle()
-        cell.newsContent.text = new.getDesc()
-        cell.newsCategory.text = new.getCategory()
+        let article = viewModels[indexPath.row]
+        cell.newsTitle.text = article.title
+        cell.newsContent.text = article.subTitle
+        if let data = article.imageData {
+            cell.newsImage.image = UIImage(data: data)
+        } else if let url = article.imageURL {
+            URLSession.shared.dataTask(with: url) { data, _, error in
+                guard let data = data, error == nil else {
+                    return
+                }
+                article.imageData = data
+                DispatchQueue.main.async {
+                    cell.newsImage.image = UIImage(data: data)
+                }
+            }.resume()
+        }
+
+        // Configure the cell...
+
         return cell
     }
-    
 
     /*
     // Override to support conditional editing of the table view.
