@@ -20,9 +20,6 @@
 		D26D58AD2820113D00FB7F23 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26D58AC2820113D00FB7F23 /* SettingViewController.swift */; };
 		D26D58AF2820117A00FB7F23 /* HotTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26D58AE2820117A00FB7F23 /* HotTableViewController.swift */; };
 		D26D58B1282011AB00FB7F23 /* HotTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26D58B0282011AB00FB7F23 /* HotTableViewCell.swift */; };
-		D26D58B32820124300FB7F23 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26D58B22820124300FB7F23 /* SearchTableViewController.swift */; };
-		D26D58B52820125F00FB7F23 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26D58B42820125F00FB7F23 /* SearchTableViewCell.swift */; };
-		D26D58B82820161B00FB7F23 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26D58B72820161B00FB7F23 /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,9 +38,6 @@
 		D26D58AC2820113D00FB7F23 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		D26D58AE2820117A00FB7F23 /* HotTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotTableViewController.swift; sourceTree = "<group>"; };
 		D26D58B0282011AB00FB7F23 /* HotTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotTableViewCell.swift; sourceTree = "<group>"; };
-		D26D58B22820124300FB7F23 /* SearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
-		D26D58B42820125F00FB7F23 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
-		D26D58B72820161B00FB7F23 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,9 +54,7 @@
 		D21062C0281E267A00C89D54 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				D26D58B6282015F400FB7F23 /* Detail */,
 				D26D58AB2820110500FB7F23 /* Login & Register */,
-				D26D58AA282010DC00FB7F23 /* Search */,
 				D26D58A9282010D300FB7F23 /* Hot */,
 				D26D58A8282010C700FB7F23 /* Setting */,
 				D21062C1281E26AF00C89D54 /* Home */,
@@ -95,13 +87,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		D2125D4F281CD5BB00BB98AD /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		D25DA4D1281A010900990FF0 = {
 			isa = PBXGroup;
 			children = (
@@ -122,7 +107,6 @@
 			isa = PBXGroup;
 			children = (
 				D21062C0281E267A00C89D54 /* Controllers */,
-				D2125D4F281CD5BB00BB98AD /* Views */,
 				D2125D45281CD16E00BB98AD /* Models */,
 				D2125D44281CD16200BB98AD /* Services */,
 				D25DA4DD281A010A00990FF0 /* AppDelegate.swift */,
@@ -153,28 +137,11 @@
 			name = Hot;
 			sourceTree = "<group>";
 		};
-		D26D58AA282010DC00FB7F23 /* Search */ = {
-			isa = PBXGroup;
-			children = (
-				D26D58B22820124300FB7F23 /* SearchTableViewController.swift */,
-				D26D58B42820125F00FB7F23 /* SearchTableViewCell.swift */,
-			);
-			path = Search;
-			sourceTree = "<group>";
-		};
 		D26D58AB2820110500FB7F23 /* Login & Register */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			name = "Login & Register";
-			sourceTree = "<group>";
-		};
-		D26D58B6282015F400FB7F23 /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				D26D58B72820161B00FB7F23 /* DetailViewController.swift */,
-			);
-			path = Detail;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -256,11 +223,8 @@
 				D26D58AF2820117A00FB7F23 /* HotTableViewController.swift in Sources */,
 				D25DA4DE281A010A00990FF0 /* AppDelegate.swift in Sources */,
 				D2125D49281CD19200BB98AD /* NetworkManager.swift in Sources */,
-				D26D58B32820124300FB7F23 /* SearchTableViewController.swift in Sources */,
 				D2125D47281CD18200BB98AD /* News.swift in Sources */,
-				D26D58B82820161B00FB7F23 /* DetailViewController.swift in Sources */,
 				D25DA4E0281A010A00990FF0 /* SceneDelegate.swift in Sources */,
-				D26D58B52820125F00FB7F23 /* SearchTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

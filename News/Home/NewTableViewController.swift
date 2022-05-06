@@ -6,15 +6,30 @@
 //
 
 import UIKit
+import SafariServices
 
-class NewTableViewController: UITableViewController {
+class NewTableViewController: UITableViewController, UISearchBarDelegate {
+    private let seatchVC = UISearchController(searchResultsController: nil)
     private var viewModels = [NewsTableViewCellModel]()
+    private var articles = [Article]()
     override func viewDidLoad() {
         super.viewDidLoad()
-        NetworkService.shared.downloadNews { result in
+        createSearchBar()
+        fetchData()
+        
+        // Uncomment the following line to preserve selection between presentations
+        // self.clearsSelectionOnViewWillAppear = false
+
+        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    //Fetch data
+    private func fetchData() {
+        NetworkService.shared.downloadNews { [weak self] result in
             switch result {
             case .success(let articles):
-                self.viewModels = articles.compactMap({
+                self?.articles = articles
+                self?.viewModels = articles.compactMap({
                     NewsTableViewCellModel(
                         title: $0.title,
                         subTitle: $0.description ?? "No description",
@@ -22,21 +37,51 @@ class NewTableViewController: UITableViewController {
                     )
                 })
                 
-                print(articles[0].urlToImage)
-                
                 DispatchQueue.main.async {
-                    self.tableView.reloadData()
+                    self?.tableView.reloadData()
                 }
             case .failure(let error):
                 print(error)
             }
         }
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    //Search
+    private func createSearchBar() {
+        navigationItem.searchController = seatchVC
+        seatchVC.searchBar.delegate = self
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let text = searchBar.text, !text.isEmpty else {
+            return
+        }
+        print(text)
+        fetchSearchData(text)
+    }
+    
+    //Fetch data
+    private func fetchSearchData(_ keyword: String) {
+        NetworkService.shared.dowloadSearchNews(with: keyword){ [weak self] result in
+            switch result {
+            case .success(let articles):
+                self?.articles = articles
+                self?.viewModels = articles.compactMap({
+                    NewsTableViewCellModel(
+                        title: $0.title,
+                        subTitle: $0.description ?? "No description",
+                        imageURL: URL(string: $0.urlToImage ?? "")
+                    )
+                })
+                
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                    self?.seatchVC.dismiss(animated: true, completion: nil)
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 
     // MARK: - Table view data source
@@ -76,6 +121,20 @@ class NewTableViewController: UITableViewController {
         // Configure the cell...
 
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let article = articles[indexPath.row]
+        
+        guard let url = URL(string: article.url ?? "") else {
+            return
+        }
+        
+        let vcSafari = SFSafariViewController(url: url)
+        present(vcSafari, animated: true)
+        
+        
     }
 
     /*
@@ -122,5 +181,4 @@ class NewTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
 }

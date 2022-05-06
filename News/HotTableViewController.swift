@@ -8,38 +8,78 @@
 import UIKit
 
 class HotTableViewController: UITableViewController {
-
+    private var viewModels = [HotTableViewCellModel]()
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Hot")
+        fetchData()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
-
+    
+    //Fetch Data
+    private func fetchData() {
+        NetworkService.shared.downloadNews { [weak self] result in
+            switch result {
+            case .success(let articles):
+                self?.viewModels = articles.compactMap({
+                    HotTableViewCellModel(
+                        title: $0.title,
+                        subTitle: $0.description ?? "No description",
+                        imageURL: URL(string: $0.urlToImage ?? "")
+                    )
+                })
+                
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return viewModels.count
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: HotTableViewCell.identifier, for: indexPath) as? HotTableViewCell else {
+            fatalError()
+        }
+        let article = viewModels[indexPath.row]
+        cell.newsTitle.text = article.title
+        cell.newsContent.text = article.subTitle
+        if let data = article.imageData {
+            cell.newsImage.image = UIImage(data: data)
+        } else if let url = article.imageURL {
+            URLSession.shared.dataTask(with: url) { data, _, error in
+                guard let data = data, error == nil else {
+                    return
+                }
+                article.imageData = data
+                DispatchQueue.main.async {
+                    cell.newsImage.image = UIImage(data: data)
+                }
+            }.resume()
+        }
 
         // Configure the cell...
 
         return cell
     }
-    */
+    
 
     /*
     // Override to support conditional editing of the table view.
