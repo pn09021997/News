@@ -13,11 +13,9 @@ class NetworkService {
     
     struct Constants {
         static let baseUrl = URL(string: "https://newsapi.org/v2/top-headlines?category=technology&country=us&apiKey=05e37a7f003b4e80bbbd3af9ae86eaf8")
-        static let topHeadlinesUrl = URL(string: "https://newsapi.org/v2/top-headlines?category=technology&country=us&apiKey=05e37a7f003b4e80bbbd3af9ae86eaf8")
+        static let topHeadlinesUrl = URL(string: "https://newsapi.org/v2/top-headlines?country=us&category=technology&from=2022-05-06&sortBy=popularity&apiKey=05e37a7f003b4e80bbbd3af9ae86eaf8")
         static let searchUrl = "https://newsapi.org/v2/everything?sortedBy=popularity&apiKey=05e37a7f003b4e80bbbd3af9ae86eaf8&q="
     }
-    
-    
     
     func downloadNews(completion: @escaping (Result<[Article], Error>) -> Void) {
         guard let url = Constants.baseUrl else {
