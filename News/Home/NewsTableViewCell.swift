@@ -1,7 +1,7 @@
 //
 //  NewTableViewCell.swift
 //  News
-//  1
+//  1.
 //  Created by Nguyen Phuong on 10/02/1401 AP.
 //
 
