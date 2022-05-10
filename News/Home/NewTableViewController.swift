@@ -102,6 +102,7 @@ class NewTableViewController: UITableViewController, UISearchBarDelegate {
             fatalError()
         }
         let article = viewModels[indexPath.row]
+        cell.articleDetail = articles[indexPath.row]
         cell.newsTitle.text = article.title
         cell.newsContent.text = article.subTitle
         if let data = article.imageData {
