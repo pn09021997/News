@@ -104,7 +104,7 @@ class NewTableViewController: UITableViewController, UISearchBarDelegate {
         let article = viewModels[indexPath.row]
         cell.articleDetail = articles[indexPath.row]
         cell.newsTitle.text = article.title
-        cell.newsContent.text = article.subTitle
+        cell.newsContent.text = article.subTitle.prefix(120) + " ..."
         if let data = article.imageData {
             cell.newsImage.image = UIImage(data: data)
         } else if let url = article.imageURL {

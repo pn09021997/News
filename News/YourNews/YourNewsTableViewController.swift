@@ -14,6 +14,7 @@ class YourNewsTableViewController: UITableViewController {
         if (DBManager.DB.checkLogin()) {
             print("isLogin")
         }
+        DBManager.DB.getListFavorNew()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 

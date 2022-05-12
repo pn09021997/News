@@ -24,7 +24,9 @@ class HotTableViewCellModel {
 }
 class HotTableViewCell: UITableViewCell {
     static let identifier = "HotTableViewCell"
-    @IBOutlet weak var newsContent: UITextField!
+    public var articleDetail: Article?
+    @IBOutlet weak var btnSave: UIButton!
+    @IBOutlet weak var newsContent: UILabel!
     @IBOutlet weak var newsTitle: UILabel!
     @IBOutlet weak var newsImage: UIImageView!
     override func awakeFromNib() {
@@ -38,4 +40,12 @@ class HotTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
+    @IBAction func btnSaveNews(_ sender: Any) {
+        let addFavorNews = DBManager.DB.addFavorNews(article: articleDetail)
+        if (addFavorNews) {
+            btnSave.setImage(UIImage(systemName: "bookmark.fill"), for: .normal)
+        } else {
+            btnSave.setImage(UIImage(systemName: "bookmark"), for: .normal)
+        }
+    }
 }

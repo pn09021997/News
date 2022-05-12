@@ -9,6 +9,7 @@ import UIKit
 
 class HotTableViewController: UITableViewController {
     private var viewModels = [HotTableViewCellModel]()
+    private var articles = [Article]()
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchData()
@@ -24,6 +25,7 @@ class HotTableViewController: UITableViewController {
         NetworkService.shared.downloadNews { [weak self] result in
             switch result {
             case .success(let articles):
+                self?.articles = articles
                 self?.viewModels = articles.compactMap({
                     HotTableViewCellModel(
                         title: $0.title,
@@ -59,8 +61,9 @@ class HotTableViewController: UITableViewController {
             fatalError()
         }
         let article = viewModels[indexPath.row]
+        cell.articleDetail = articles[indexPath.row]
         cell.newsTitle.text = article.title
-        cell.newsContent.text = article.subTitle
+        cell.newsContent.text = article.subTitle.prefix(120) + " ..."
         if let data = article.imageData {
             cell.newsImage.image = UIImage(data: data)
         } else if let url = article.imageURL {
