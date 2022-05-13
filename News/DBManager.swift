@@ -14,6 +14,7 @@ class DBManager {
     private var checkFavorNews = true
     private var articleID = ""
     private var isLogin = true
+    var viewModels = [YourNewsTableViewCellModel]()
     
     func getIsLogin () -> Bool {
         return self.isLogin
@@ -34,17 +35,23 @@ class DBManager {
         }
     }
     
-    func getListFavorNew() {
+    func getListFavorNew (){
         let userID = "-N1HpCU9jKvHNEzRPTrf"
         ref.child("YourNews/\(userID)").observeSingleEvent(of: .value){
             (snapshot) in let listNews = snapshot.value as? NSDictionary
-             
+
             if let listNews = listNews {
-                for (key, value) in listNews {
-                    print("\(key): \(value)")
-                }
+                self.viewModels = listNews.compactMap({
+                    YourNewsTableViewCellModel(
+                        title: ($0.value as AnyObject)["title"] as! String,
+                        subTitle: ($0.value as AnyObject)["description"] as? String ?? "No description",
+                        imageURL: URL(string: ($0.value as AnyObject)["urlToImage"] as? String ?? "")
+                    )
+                })
             }
         }
+        
+        print(self.viewModels)
     }
     
     func addFavorNews (article articleDetail: Article?) -> Bool {

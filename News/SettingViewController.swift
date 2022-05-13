@@ -21,13 +21,22 @@ class SettingViewController: UIViewController {
     }*/
     
     @IBAction func btnLogin(_ sender: Any) {
-        if (!checkIsLogin) {
+        if (checkIsLogin) {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
             self.present(vc, animated: true, completion: nil)
         } else {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "InfoViewController") as! InfoViewController
             self.present(vc, animated: true, completion: nil)
         }
-
+    }
+    
+    @IBAction func btnYourNews(_ sender: Any) {
+        if (!checkIsLogin) {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "NotLoginViewController") as! NotLoginViewController
+            self.present(vc, animated: true, completion: nil)
+        } else {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "YourNewsTableViewController") as! YourNewsTableViewController
+            self.present(vc, animated: true, completion: nil)
+        }
     }
 }

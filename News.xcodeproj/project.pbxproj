@@ -29,6 +29,7 @@
 		D26D58AD2820113D00FB7F23 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26D58AC2820113D00FB7F23 /* SettingViewController.swift */; };
 		D26D58AF2820117A00FB7F23 /* HotTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26D58AE2820117A00FB7F23 /* HotTableViewController.swift */; };
 		D26D58B1282011AB00FB7F23 /* HotTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26D58B0282011AB00FB7F23 /* HotTableViewCell.swift */; };
+		D28B4245282DF14500E1E101 /* NotLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28B4244282DF14500E1E101 /* NotLoginViewController.swift */; };
 		D29CC80B282C8A2D0024BC25 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29CC80A282C8A2D0024BC25 /* InfoViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +55,7 @@
 		D26D58AC2820113D00FB7F23 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		D26D58AE2820117A00FB7F23 /* HotTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotTableViewController.swift; sourceTree = "<group>"; };
 		D26D58B0282011AB00FB7F23 /* HotTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotTableViewCell.swift; sourceTree = "<group>"; };
+		D28B4244282DF14500E1E101 /* NotLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotLoginViewController.swift; sourceTree = "<group>"; };
 		D29CC80A282C8A2D0024BC25 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -175,6 +177,7 @@
 				D22ECDFA2824E00E00D7BD7F /* LoginViewController.swift */,
 				D22ECDFC2824E03B00D7BD7F /* RegisterViewController.swift */,
 				D29CC80A282C8A2D0024BC25 /* InfoViewController.swift */,
+				D28B4244282DF14500E1E101 /* NotLoginViewController.swift */,
 			);
 			name = "Login & Register";
 			sourceTree = "<group>";
@@ -269,6 +272,7 @@
 				D258E2672829A0EE00BEA698 /* YourNewsTableViewCell.swift in Sources */,
 				D258E2652829A0C400BEA698 /* YourNewsTableViewController.swift in Sources */,
 				D25DA4DE281A010A00990FF0 /* AppDelegate.swift in Sources */,
+				D28B4245282DF14500E1E101 /* NotLoginViewController.swift in Sources */,
 				D258E2692829B76F00BEA698 /* DBManager.swift in Sources */,
 				D2125D49281CD19200BB98AD /* NetworkManager.swift in Sources */,
 				D2125D47281CD18200BB98AD /* News.swift in Sources */,

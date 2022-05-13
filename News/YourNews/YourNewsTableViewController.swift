@@ -6,15 +6,38 @@
 //
 
 import UIKit
+import Firebase
 
 class YourNewsTableViewController: UITableViewController {
-    private var listDemo = ["Your Table View Cell 11234", "Your Table View Cell 131313"]
+    private var viewModels = [YourNewsTableViewCellModel]()
     override func viewDidLoad() {
         super.viewDidLoad()
-        if (DBManager.DB.checkLogin()) {
-            print("isLogin")
+        let ref = Database.database().reference()
+        let userID = "-N1HpCU9jKvHNEzRPTrf"
+        ref.child("YourNews/\(userID)/").observeSingleEvent(of: .value){
+            (snapshot) in let listNews = snapshot.value as? NSDictionary
+            if let listNews = listNews {
+                for (_, value) in listNews {
+                    if let favorNews = value as? NSDictionary {
+                        if let title = favorNews.value(forKey: "title"),
+                            let urlToImage = favorNews.value(forKey: "urlToImage"),
+                            let description = favorNews.value(forKey: "description") {
+                            self.viewModels.append(
+                                YourNewsTableViewCellModel(
+                                    title: title as! String,
+                                    subTitle: (description as! String) ?? "No description",
+                                    imageURL: URL(string: (urlToImage as! String) ?? "")
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
-        DBManager.DB.getListFavorNew()
+    
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -31,7 +54,7 @@ class YourNewsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return listDemo.count
+        return viewModels.count
     }
 
     
@@ -39,8 +62,24 @@ class YourNewsTableViewController: UITableViewController {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: YourNewsTableViewCell.identifier, for: indexPath) as? YourNewsTableViewCell else {
             fatalError()
         }
-        let demo = listDemo[indexPath.row]
-        cell.NewsTitle.text = demo
+        let article = viewModels[indexPath.row]
+        cell.NewsTitle.text = article.title
+        if let data = article.imageData {
+            cell.NewsImage.image = UIImage(data: data)
+        } else if let url = article.imageURL {
+            URLSession.shared.dataTask(with: url) { data, _, error in
+                guard let data = data, error == nil else {
+                    return
+                }
+                article.imageData = data
+                DispatchQueue.main.async {
+                    cell.NewsImage.image = UIImage(data: data)
+                }
+            }.resume()
+        }
+
+        // Configure the cell...
+
         return cell
     }
     
