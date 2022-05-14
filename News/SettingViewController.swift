@@ -15,11 +15,6 @@ class SettingViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    /*//if else between 2 screen login and your opinion
-    override func prepare(for: UIStoryboardSegue, sender: Any?) {
-        
-    }*/
-    
     @IBAction func btnLogin(_ sender: Any) {
         if (checkIsLogin) {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
