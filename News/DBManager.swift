@@ -35,23 +35,15 @@ class DBManager {
         }
     }
     
-    func getListFavorNew (){
+    func getListFavorNew (completion: @escaping (Result<NSDictionary, Error>) -> Void){
         let userID = "-N1HpCU9jKvHNEzRPTrf"
         ref.child("YourNews/\(userID)").observeSingleEvent(of: .value){
             (snapshot) in let listNews = snapshot.value as? NSDictionary
 
             if let listNews = listNews {
-                self.viewModels = listNews.compactMap({
-                    YourNewsTableViewCellModel(
-                        title: ($0.value as AnyObject)["title"] as! String,
-                        subTitle: ($0.value as AnyObject)["description"] as? String ?? "No description",
-                        imageURL: URL(string: ($0.value as AnyObject)["urlToImage"] as? String ?? "")
-                    )
-                })
+                completion(.success(listNews))
             }
         }
-        
-        print(self.viewModels)
     }
     
     func addFavorNews (article articleDetail: Article?) -> Bool {

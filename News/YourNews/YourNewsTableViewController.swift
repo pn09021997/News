@@ -6,43 +6,51 @@
 //
 
 import UIKit
-import Firebase
+import SafariServices
 
 class YourNewsTableViewController: UITableViewController {
     private var viewModels = [YourNewsTableViewCellModel]()
+    private var articles:NSDictionary?
     override func viewDidLoad() {
         super.viewDidLoad()
-        let ref = Database.database().reference()
-        let userID = "-N1HpCU9jKvHNEzRPTrf"
-        ref.child("YourNews/\(userID)/").observeSingleEvent(of: .value){
-            (snapshot) in let listNews = snapshot.value as? NSDictionary
-            if let listNews = listNews {
+        getFavorListNews()
+    
+        // Uncomment the following line to preserve selection between presentations
+        // self.clearsSelectionOnViewWillAppear = false
+
+        //self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    func getFavorListNews () {
+        DBManager.DB.getListFavorNew{ [weak self] result in
+            switch result {
+            case .success(let listNews):
+                self?.articles = listNews
                 for (_, value) in listNews {
                     if let favorNews = value as? NSDictionary {
                         if let title = favorNews.value(forKey: "title"),
-                            let urlToImage = favorNews.value(forKey: "urlToImage"),
-                            let description = favorNews.value(forKey: "description") {
-                            self.viewModels.append(
+                           let urlToImage = favorNews.value(forKey: "urlToImage"),
+                           let description = favorNews.value(forKey: "description"),
+                           let url = favorNews.value(forKey: "url") {
+                            self?.viewModels.append(
                                 YourNewsTableViewCellModel(
                                     title: title as! String,
                                     subTitle: (description as! String) ?? "No description",
+                                    url: url as! String,
                                     imageURL: URL(string: (urlToImage as! String) ?? "")
                                 )
                             )
                         }
                     }
                 }
-            }
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+                
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                }
+            case .failure(let error):
+                print(error)
             }
         }
-    
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     // MARK: - Table view data source
@@ -84,13 +92,18 @@ class YourNewsTableViewController: UITableViewController {
     }
     
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let articleURL = viewModels[indexPath.row].url
+        guard let url = URL(string: articleURL ?? "") else {
+            return
+        }
+        
+        let vcSafari = SFSafariViewController(url: url)
+        present(vcSafari, animated: true)
+        
+        
     }
-    */
 
     /*
     // Override to support editing the table view.

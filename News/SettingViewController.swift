@@ -27,10 +27,10 @@ class SettingViewController: UIViewController {
     
     @IBAction func btnYourNews(_ sender: Any) {
         if (!checkIsLogin) {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "NotLoginViewController") as! NotLoginViewController
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "YourNewsTableViewController") as! YourNewsTableViewController
             self.present(vc, animated: true, completion: nil)
         } else {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "YourNewsTableViewController") as! YourNewsTableViewController
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "NotLoginViewController") as! NotLoginViewController
             self.present(vc, animated: true, completion: nil)
         }
     }
