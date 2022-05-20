@@ -13,31 +13,54 @@ class DBManager {
     private let ref = Database.database().reference()
     private var checkFavorNews = true
     private var articleID = ""
-    private var isLogin = true
+    private var isLogin = false
+    private var userID: String?
     var viewModels = [YourNewsTableViewCellModel]()
-    
-    func getIsLogin () -> Bool {
-        return self.isLogin
-    }
     
     private init() {}
     
-    func checkLogin() -> Bool {
-        if (!isLogin) {
-            return false
+    func getIsLogin () -> String {
+        if let returnValue = UserDefaults.standard.string(forKey: "USER_SESSION") {
+            self.userID = returnValue
+            self.isLogin = true
         }
-        return true
+        return self.userID!
     }
     
-    func setisLogin () {
-        if (true) {
+    func checkLogin() -> Bool {
+        if let returnValue = UserDefaults.standard.string(forKey: "USER_SESSION") {
+            self.userID = returnValue
+            self.isLogin = true
+        }
+        print(self.isLogin)
+        return self.isLogin
+    }
+    
+    func logout () {
+        UserDefaults.standard.removeObject(forKey: "USER_SESSION")
+        self.isLogin = false
+    }
+    
+    func setisLogin (userId: String) {
+        UserDefaults.standard.set(userId, forKey: "USER_SESSION")
+        if let returnValue = UserDefaults.standard.string(forKey: "USER_SESSION") {
+            self.userID = returnValue
             self.isLogin = true
         }
     }
     
+    func getLoginList (completion: @escaping (Result<NSDictionary, Error>) -> Void) {
+        ref.child("Users").observeSingleEvent(of: .value){
+            (snapshot) in let listUsers = snapshot.value as? NSDictionary
+
+            if let listUsers = listUsers {
+                completion(.success(listUsers))
+            }
+        }
+    }
+    
     func getListFavorNew (completion: @escaping (Result<NSDictionary, Error>) -> Void){
-        let userID = "-N1HpCU9jKvHNEzRPTrf"
-        ref.child("YourNews/\(userID)").observeSingleEvent(of: .value){
+        ref.child("YourNews/\(self.userID)").observeSingleEvent(of: .value){
             (snapshot) in let listNews = snapshot.value as? NSDictionary
 
             if let listNews = listNews {
@@ -47,8 +70,7 @@ class DBManager {
     }
     
     func addFavorNews (article articleDetail: Article?) -> Bool {
-        let userID = "-N1HpCU9jKvHNEzRPTrf"
-        ref.child("YourNews/\(userID)").observeSingleEvent(of: .value){
+        ref.child("YourNews/\(self.userID)").observeSingleEvent(of: .value){
             (snapshot) in let listNews = snapshot.value as? NSDictionary
              
             if let listNews = listNews {
@@ -73,12 +95,12 @@ class DBManager {
                     "urlToImage": article.urlToImage ?? "default",
                     "publishedAt": article.publishedAt
                 ]
-                ref.child("YourNews/\(userID)").childByAutoId().setValue(articlesArr)
+                ref.child("YourNews/\(self.userID)").childByAutoId().setValue(articlesArr)
             }
             return true
         } else {
             print("We have it on DB")
-            ref.child("YourNews/\(userID)").child(articleID).removeValue()
+            ref.child("YourNews/\(self.userID)").child(articleID).removeValue()
             self.checkFavorNews = true
             return false
         }

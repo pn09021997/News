@@ -8,25 +8,68 @@
 import UIKit
 
 class LoginViewController: UIViewController {
-
+    private var checkValidUsername: Bool?
+    private var checkValidPassword: Bool?
+    @IBOutlet weak var txtPassword: UITextField!
+    @IBOutlet weak var txtUsername: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Login")
-        
-        // Do any additional setup after loading the view.
     }
     
     @IBAction func btnLogin(_ sender: Any) {
-        // create the alert
-                let alert = UIAlertController(title: "Notice", message: "Lauching this missile will destroy the entire universe. Is this what you intended to do?", preferredStyle: UIAlertController.Style.alert)
-
-                // add the actions (buttons)
-                alert.addAction(UIAlertAction(title: "Remind Me Tomorrow", style: UIAlertAction.Style.default, handler: nil))
-                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
-                alert.addAction(UIAlertAction(title: "Launch the Missile", style: UIAlertAction.Style.destructive, handler: nil))
-
-                // show the alert
-                self.present(alert, animated: true, completion: nil)
+        if let username = txtUsername.text?.replacingOccurrences(of: " ", with: ""),
+           let password = txtPassword.text?.replacingOccurrences(of: " ", with: ""){
+            if username.isEmpty || password.isEmpty {
+                showAlertMesssage(message: "Please fill out the form !!!", errors: true)
+            } else {
+                let userTxt = User(username: username, password: password, email: "none")
+                DBManager.DB.getLoginList{ [weak self] result in
+                    switch result {
+                    case .success(let loginList):
+                        for (key, value) in loginList {
+                            if let userInfo = value as? NSDictionary {
+                                if let txtUsername = userInfo.value(forKey: "username"),
+                                   let txtPassword = userInfo.value(forKey: "password") {
+                                    
+                                    self?.checkValidUsername = userTxt.username == (txtUsername as! String)
+                                    self?.checkValidPassword = userTxt.password == (txtPassword as! String)
+                                    if (self?.checkValidUsername == true) && (self?.checkValidPassword == true) {
+                                        self?.showAlertMesssage(message: "Welcome back \(txtUsername)", errors: false)
+                                        DBManager.DB.setisLogin(userId: (key as! String))
+                                        break
+                                    }
+                                }
+                            }
+                        }
+                        self?.showAlertMesssage(message: "Your username / password unvalid !!!", errors: true)
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+            }
+        }
+    }
+    
+    func showAlertMesssage(message: String, errors :Bool) {
+        let alert = UIAlertController(title: "Alert", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            switch action.style{
+                case .default:
+                if !errors {
+                    self.dismiss(animated: true, completion: nil)
+                }
+                break
+                
+                case .cancel:
+                break
+                
+                case .destructive:
+                break
+                
+            }
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
     
     /*

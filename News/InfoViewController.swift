@@ -9,6 +9,9 @@ import UIKit
 
 class InfoViewController: UIViewController {
 
+    @IBOutlet weak var txtEmail: UITextField!
+    @IBOutlet weak var txtPassword: UITextField!
+    @IBOutlet weak var txtUsername: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -16,6 +19,12 @@ class InfoViewController: UIViewController {
     }
     
 
+    @IBAction func btnLogout(_ sender: Any) {
+        DBManager.DB.logout()
+        dismiss(animated: true, completion: nil)
+    }
+    @IBAction func btnUpdateInfo(_ sender: Any) {
+    }
     /*
     // MARK: - Navigation
 
