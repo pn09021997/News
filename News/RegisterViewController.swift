@@ -7,15 +7,7 @@
 
 
 
-struct AuthCatch{
-    let checkValid: Bool
-    let message: String
-    
-    init(checkValid: Bool, message: String) {
-        self.checkValid = checkValid
-        self.message = message
-    }
-}
+
 
 import UIKit
 import Firebase

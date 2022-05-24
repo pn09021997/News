@@ -22,7 +22,7 @@ class HotTableViewController: UITableViewController {
     
     //Fetch Data
     private func fetchData() {
-        NetworkService.shared.downloadNews { [weak self] result in
+        NetworkService.shared.dowloadHeadlinesNews{ [weak self] result in
             switch result {
             case .success(let articles):
                 self?.articles = articles

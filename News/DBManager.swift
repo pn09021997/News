@@ -41,6 +41,16 @@ class DBManager {
         self.isLogin = false
     }
     
+    func getLoginInfo (userId: String, completion: @escaping (Result<NSDictionary, Error>) -> Void) {
+        ref.child("Users/\(userId)").observeSingleEvent(of: .value){
+            (snapshot) in let userInfo = snapshot.value as? NSDictionary
+
+            if let userInfo = userInfo {
+                completion(.success(userInfo))
+            }
+        }
+    }
+    
     func setisLogin (userId: String) {
         UserDefaults.standard.set(userId, forKey: "USER_SESSION")
         if let returnValue = UserDefaults.standard.string(forKey: "USER_SESSION") {
