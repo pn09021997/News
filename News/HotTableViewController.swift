@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class HotTableViewController: UITableViewController {
     private var viewModels = [HotTableViewCellModel]()
@@ -60,6 +61,7 @@ class HotTableViewController: UITableViewController {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: HotTableViewCell.identifier, for: indexPath) as? HotTableViewCell else {
             fatalError()
         }
+        cell.viewController = self
         let article = viewModels[indexPath.row]
         cell.articleDetail = articles[indexPath.row]
         cell.newsTitle.text = article.title
@@ -83,6 +85,19 @@ class HotTableViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let article = articles[indexPath.row]
+        
+        guard let url = URL(string: article.url ?? "") else {
+            return
+        }
+        
+        let vcSafari = SFSafariViewController(url: url)
+        present(vcSafari, animated: true)
+        
+        
+    }
 
     /*
     // Override to support conditional editing of the table view.

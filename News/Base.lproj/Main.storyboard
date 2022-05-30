@@ -30,13 +30,13 @@
         <!--Home-->
         <scene sceneID="645-fn-lD8">
             <objects>
-                <tableViewController id="dnR-Id-VCc" customClass="NewTableViewController" customModule="News" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NewTableViewController" id="dnR-Id-VCc" customClass="NewTableViewController" customModule="News" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="7kU-HU-V6S">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewsTableViewCell" rowHeight="320" id="tiZ-dY-SM0" customClass="NewsTableViewCell" customModule="News" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="NewsTableViewCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewsTableViewCell" rowHeight="320" id="tiZ-dY-SM0" customClass="NewsTableViewCell" customModule="News" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="44.5" width="414" height="320"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tiZ-dY-SM0" id="z6o-5a-tcj">
@@ -226,8 +226,8 @@
                                     <action selector="btnYourNews:" destination="POV-Ky-uhJ" eventType="touchUpInside" id="a27-r6-0Kc"/>
                                 </connections>
                             </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="31" translatesAutoresizingMaskIntoConstraints="NO" id="zW2-2q-rBJ">
-                                <rect key="frame" x="20" y="396" width="354" height="217"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="31" translatesAutoresizingMaskIntoConstraints="NO" id="udq-Vg-GCB">
+                                <rect key="frame" x="20" y="396" width="354" height="255"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="2rV-Yi-apD">
                                         <rect key="frame" x="0.0" y="0.0" width="156" height="62"/>
@@ -246,8 +246,8 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="f8G-hU-vJB">
-                                        <rect key="frame" x="0.0" y="93" width="330" height="124"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="w8Y-9k-1yY">
+                                        <rect key="frame" x="0.0" y="93" width="330" height="162"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address: 53 Vo Van Ngan street, Linh Chieu, Thu Duc City, Ho Chi Minh City" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fyP-T5-uda">
                                                 <rect key="frame" x="0.0" y="0.0" width="330" height="48"/>
@@ -267,6 +267,12 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Complaint" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SQ1-kv-0U2">
+                                                <rect key="frame" x="0.0" y="138" width="89.5" height="24"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                     </stackView>
                                 </subviews>
@@ -275,18 +281,22 @@
                         <viewLayoutGuide key="safeArea" id="vrV-iD-Gal"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="udq-Vg-GCB" secondAttribute="trailing" constant="20" id="1gd-Ot-BXE"/>
                             <constraint firstItem="vrV-iD-Gal" firstAttribute="trailing" secondItem="bYk-Dv-vFg" secondAttribute="trailing" constant="20" id="1qb-vj-53z"/>
-                            <constraint firstItem="zW2-2q-rBJ" firstAttribute="top" secondItem="feb-cR-7HN" secondAttribute="bottom" constant="150" id="3JV-Ag-3eM"/>
                             <constraint firstItem="feb-cR-7HN" firstAttribute="top" secondItem="bYk-Dv-vFg" secondAttribute="bottom" constant="10" id="4RZ-lE-P2R"/>
                             <constraint firstItem="bYk-Dv-vFg" firstAttribute="top" secondItem="vrV-iD-Gal" secondAttribute="top" constant="20" id="55g-Jd-ilY"/>
-                            <constraint firstItem="zW2-2q-rBJ" firstAttribute="leading" secondItem="vrV-iD-Gal" secondAttribute="leading" constant="20" id="6ZZ-lx-9PK"/>
                             <constraint firstItem="bYk-Dv-vFg" firstAttribute="leading" secondItem="vrV-iD-Gal" secondAttribute="leading" constant="20" id="EKN-OA-bCI"/>
+                            <constraint firstItem="udq-Vg-GCB" firstAttribute="leading" secondItem="vrV-iD-Gal" secondAttribute="leading" constant="20" id="J86-BC-Lmu"/>
                             <constraint firstItem="vrV-iD-Gal" firstAttribute="trailing" secondItem="feb-cR-7HN" secondAttribute="trailing" constant="20" id="Q5k-Zr-SqU"/>
                             <constraint firstItem="feb-cR-7HN" firstAttribute="leading" secondItem="vrV-iD-Gal" secondAttribute="leading" constant="20" id="TCl-Ff-ahS"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="zW2-2q-rBJ" secondAttribute="trailing" constant="20" id="VbY-S9-qPW"/>
+                            <constraint firstItem="udq-Vg-GCB" firstAttribute="top" secondItem="feb-cR-7HN" secondAttribute="bottom" constant="150" id="thJ-RE-7dW"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Setting" id="nGY-kI-mTH"/>
+                    <connections>
+                        <outlet property="btnLoginRegister" destination="bYk-Dv-vFg" id="LgZ-tz-vgb"/>
+                        <outlet property="txtComplaint" destination="SQ1-kv-0U2" id="y2c-Zf-X6P"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="L3F-v2-nep" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

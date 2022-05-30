@@ -101,6 +101,7 @@ class NewTableViewController: UITableViewController, UISearchBarDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsTableViewCell.identifier, for: indexPath) as? NewsTableViewCell else {
             fatalError()
         }
+        cell.viewController = self
         let article = viewModels[indexPath.row]
         cell.articleDetail = articles[indexPath.row]
         cell.newsTitle.text = article.title

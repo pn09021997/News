@@ -16,9 +16,9 @@ class YourNewsTableViewController: UITableViewController {
         getFavorListNews()
     
         // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
+        self.clearsSelectionOnViewWillAppear = false
 
-        //self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
     func getFavorListNews () {
@@ -71,7 +71,7 @@ class YourNewsTableViewController: UITableViewController {
             fatalError()
         }
         let article = viewModels[indexPath.row]
-        cell.NewsTitle.text = article.title
+        cell.NewsTitle.text = article.title.prefix(120) + " ..."
         if let data = article.imageData {
             cell.NewsImage.image = UIImage(data: data)
         } else if let url = article.imageURL {
@@ -105,17 +105,40 @@ class YourNewsTableViewController: UITableViewController {
         
     }
 
-    /*
+    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            // create the alert
+            let alert = UIAlertController(title: "UIAlertController", message: "Are you want to delete it?", preferredStyle: UIAlertController.Style.alert)
+
+            // add the actions (buttons)
+            alert.addAction(UIAlertAction(title: "Continue", style: .default, handler: { action in
+                switch action.style{
+                    case .default:
+                    let url = self.viewModels[indexPath.row].url
+                    self.viewModels.remove(at: indexPath.row)
+                    DBManager.DB.deleteFavorNews_Id(url: url)
+                    // Delete the row from the data source
+                    self.tableView.deleteRows(at: [indexPath], with: .fade)
+                    self.tableView.reloadData()
+                    
+                    case .cancel:
+                    break
+                    
+                    
+                    case .destructive:
+                    break
+                }
+            }))
+            alert.addAction(UIAlertAction(title: "Cancle", style: .default, handler: nil))
+            // show the alert
+            self.present(alert, animated: true, completion: nil)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
+    
 
     /*
     // Override to support rearranging the table view.

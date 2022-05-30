@@ -25,6 +25,8 @@ class HotTableViewCellModel {
 class HotTableViewCell: UITableViewCell {
     static let identifier = "HotTableViewCell"
     public var articleDetail: Article?
+    weak var viewController: UIViewController?
+    
     @IBOutlet weak var btnSave: UIButton!
     @IBOutlet weak var newsContent: UILabel!
     @IBOutlet weak var newsTitle: UILabel!
@@ -41,11 +43,22 @@ class HotTableViewCell: UITableViewCell {
     }
 
     @IBAction func btnSaveNews(_ sender: Any) {
-        let addFavorNews = DBManager.DB.addFavorNews(article: articleDetail)
-        if (addFavorNews) {
-            btnSave.setImage(UIImage(systemName: "bookmark.fill"), for: .normal)
+        if (DBManager.DB.checkLogin()) {
+            let addFavorNews = DBManager.DB.addFavorNews(article: articleDetail)
+            if (addFavorNews) {
+                btnSave.setImage(UIImage(systemName: "bookmark.fill"), for: .normal)
+            } else {
+                btnSave.setImage(UIImage(systemName: "bookmark"), for: .normal)
+            }
         } else {
-            btnSave.setImage(UIImage(systemName: "bookmark"), for: .normal)
+            // create the alert
+            let alert = UIAlertController(title: "Title", message: "You need login first !", preferredStyle: UIAlertController.Style.alert)
+
+            // add an action (button)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+
+            // show the alert
+            viewController?.present(alert, animated: true, completion: nil)
         }
     }
 }

@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import OSLog
 
 class DBManager {
     static let DB = DBManager()
@@ -70,7 +71,7 @@ class DBManager {
     }
     
     func getListFavorNew (completion: @escaping (Result<NSDictionary, Error>) -> Void){
-        ref.child("YourNews/\(self.userID)").observeSingleEvent(of: .value){
+        ref.child("YourNews/\(getIsLogin())").observeSingleEvent(of: .value){
             (snapshot) in let listNews = snapshot.value as? NSDictionary
 
             if let listNews = listNews {
@@ -79,40 +80,77 @@ class DBManager {
         }
     }
     
-    func addFavorNews (article articleDetail: Article?) -> Bool {
-        ref.child("YourNews/\(self.userID)").observeSingleEvent(of: .value){
-            (snapshot) in let listNews = snapshot.value as? NSDictionary
-             
-            if let listNews = listNews {
-                for (key, value) in listNews {
+    func deleteFavorNews_Id(url: String) {
+        var check: Bool = true
+        DBManager.DB.getListFavorNew{ result in
+            switch result {
+            case .success(let listFavorNews):
+                for (key, value) in listFavorNews {
+                    let favorNews = value as? NSDictionary
+                    let urlTxt = favorNews?.value(forKey: "url") as! String
+                    if (url == urlTxt) {
+                        check = false
+                        self.articleID = key as! String
+                        break
+                    }
+                }
+                
+                DispatchQueue.main.async {
+                    if (check == false) {
+                        os_log("remove successfully")
+                        self.ref.child("YourNews/\(self.getIsLogin())").child(self.articleID).removeValue()
+                    }
+                }
+            case .failure(_):
+                break
+            }
+        }
+    }
+    
+    func addFavorNews (article articleDetail: Article?) -> Bool{
+        var check: Bool = true
+        DBManager.DB.getListFavorNew{ result in
+            switch result {
+            case .success(let listFavorNews):
+                for (key, value) in listFavorNews {
                     let favorNews = value as? NSDictionary
                     let urlTxt = favorNews?.value(forKey: "url") as! String
                     if (articleDetail?.url == urlTxt) {
+                        check = false
                         self.articleID = key as! String
-                        self.checkFavorNews = false
+                        break
                     }
                 }
+                
+                DispatchQueue.main.async {
+                    if (check == true) {
+                        os_log("article valid for insert")
+                        if let article = articleDetail{
+                            let articlesArr = [
+                                "title": article.title,
+                                "description": article.description ?? "No Description",
+                                "url": article.url,
+                                "urlToImage": article.urlToImage ?? "default",
+                                "publishedAt": article.publishedAt
+                            ]
+                            self.ref.child("YourNews/\(self.getIsLogin())").childByAutoId().setValue(articlesArr)
+                        }
+                    } else {
+                        os_log("article invalid for insert")
+                        os_log("remove successfully")
+                        self.checkFavorNews = false
+                        self.ref.child("YourNews/\(self.getIsLogin())").child(self.articleID).removeValue()
+                    }
+                }
+            case .failure(_):
+                break
             }
         }
-
-        
-        if (checkFavorNews == true) {
-            if let article = articleDetail{
-                let articlesArr = [
-                    "title": article.title,
-                    "description": article.description ?? "No Description",
-                    "url": article.url,
-                    "urlToImage": article.urlToImage ?? "default",
-                    "publishedAt": article.publishedAt
-                ]
-                ref.child("YourNews/\(self.userID)").childByAutoId().setValue(articlesArr)
-            }
-            return true
-        } else {
-            print("We have it on DB")
-            ref.child("YourNews/\(self.userID)").child(articleID).removeValue()
-            self.checkFavorNews = true
+        if (self.checkFavorNews == true) {
             return false
+        } else {
+            self.checkFavorNews = true
+            return true
         }
     }
 }
